@@ -2,7 +2,21 @@ const express = require('express');
 const app = express()
 const fs = require('fs');
 
+// 1. MIDDLEWARES
 app.use(express.json())
+
+app.use((req,res,next)=>{
+    console.log("Hello from the middleware")
+    next();
+})
+
+app.use((req,res,next)=>{
+    req.requestTime = new Date().toISOString()
+    console.log("Hello from the middleware")
+    next();
+})
+
+//2. CONTROLLERS
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8'))
 
@@ -10,6 +24,7 @@ const getAllTours = (req, res) => {
     res.status(200).json({
         status:'success',
         results:tours.length,
+        requestedAt: req.requestTime,
         data:{
             tours:tours 
         }
@@ -90,6 +105,40 @@ const deleteTour =  (req, res) => {
     })
 }
 
+const getAllUsers = (req,res)=>{
+    res.status(500).json({
+        status:'error',
+        message:'THis route is not yet defined'
+    })
+}
+
+const createUser = (req,res)=>{
+    res.status(500).json({
+        status:'error',
+        message:'THis route is not yet defined'
+    })
+}
+
+const getUser = (req,res)=>{
+    res.status(500).json({
+        status:'error',
+        message:'THis route is not yet defined'
+    })
+}
+
+const updateUser = (req,res)=>{
+    res.status(500).json({
+        status:'error',
+        message:'THis route is not yet defined'
+    })
+}
+
+const deleteUser = (req,res)=>{
+    res.status(500).json({
+        status:'error',
+        message:'THis route is not yet defined'
+    })
+}
 // app.get('/api/v1/tours', getAllTours)
 
 // app.post('/api/v1/tours',createTour)
@@ -100,22 +149,35 @@ const deleteTour =  (req, res) => {
 
 // app.delete('/api/v1/tours/:id',deleteTour)
 
-app.route('/api/v1/tours')
+//3. ROUTE
+
+
+
+const tourRouter = express.Router()
+const userRouter = express.Router()
+
+
+tourRouter.route('/')
     .get(getAllTours)
     .post(createTour)
 
-app.route('/api/v1/tours/:id')
+tourRouter.route('/:id')
     .get(getTour)
     .patch(updateTour)
     .delete(deleteTour)
 
 
-// app.get('/',(req,res)=>{
-//     res.status(200).json({message:'Natours app  start here', app:"Natours"})
-// })
+userRouter.route('/')
+    .get(getAllUsers)
+    .post(createUser)
 
-// app.post('/',(req,res)=>{
-//     res.send("req.body is sent over")
-// })
+userRouter.route('/:id')
+    .get(getUser)
+    .patch(updateUser)
+    .delete(deleteUser)
 
+app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/users', userRouter)
+
+    //4. SERVER
 app.listen(8000, ()=>{console.log("port is running on 8000")})
