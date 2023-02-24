@@ -1,12 +1,20 @@
 const express = require('express');
 const app = express()
+const path = require('path');
 const fs = require('fs');
+const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
 
 
 // 1. MIDDLEWARES
+app.use(morgan('dev'))
 app.use(express.json())
+// app.use(express.static(`${__dirname}/public}`))
+console.log(typeof(`(${__dirname}/public`))
+console.log(typeof(path.join(__dirname, "public")))
+
+app.use(express.static(path.join(__dirname, "public")))
 
 app.use((req,res,next)=>{
     console.log("Hello from the middleware")
