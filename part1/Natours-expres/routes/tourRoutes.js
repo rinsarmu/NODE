@@ -8,11 +8,11 @@ const {
      getTour, 
      updateTour,
       deleteTour,
-      checkId,
+    //   checkId,
       checkBody
     } = require('../controllers/tourController')
 
-tourRouter.param('id', checkId)
+// tourRouter.param('id', checkId)
 
 tourRouter.route('/')
     .get(getAllTours)

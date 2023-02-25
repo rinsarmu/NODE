@@ -13,7 +13,7 @@ mongoose.connect(DB, {
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
-    strictQuery: false
+  
     
 })
     .then(con=>{
@@ -21,24 +21,11 @@ mongoose.connect(DB, {
         console.log("Db connection established")
     });
 
-const tourSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: [true, 'A Tour must have a name'],
-        unique: true
-    },
-    rating: {
-        type:Number,
-        default: 4.5
-    },
-    price:{
-        type: Number,
-        required: [true, 'A tour must have a price']
-    }
-})
 
-const Tour = mongoose.model('Tour', tourSchema)
-// console.log(process.env)
+
+
+
+
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, ()=>{console.log("port is running on 8000")})
