@@ -9,14 +9,14 @@ const {
      updateTour,
       deleteTour,
     //   checkId,
-      checkBody
+    //   checkBody
     } = require('../controllers/tourController')
 
 // tourRouter.param('id', checkId)
 
 tourRouter.route('/')
     .get(getAllTours)
-    .post(checkBody, createTour)
+    .post( createTour)
 
 tourRouter.route('/:id')
     .get(getTour)
