@@ -29,6 +29,12 @@ const APIFeatures = require('./../utils/ApiFeatures');
 //     }
 //   };
 
+exports.aliasTopTours = (req,res,next)=>{
+    req.query.limit = '5'
+    req.query.sort = 'ratingsAverage,price'
+    req.query.fields = 'name,price, ratingsAverages,summary,difficulty'
+    next();
+}
 exports.getAllTours = async(req, res) => {
     try{
         // BUILD QUERY
@@ -48,26 +54,12 @@ exports.getAllTours = async(req, res) => {
         console.log("dd")
         console.log(JSON.parse(queryStr))
 
-        // let querySort = {}
-        // if(req.query.sort){
-        //     // const sortBy = req.query.sort.split(',').join(" ")
-        //     // const sortBy = [...req.query.sort]
-        //     // console.log(sortBy)
-        //     const name = req.query.sort
-        //     console.log(name, "ddds")
-        //     let c = {}
-        //     // for(let i = 0; i <name.length; i++){
-        //     //     querySort[name[i]] = -1
-        //     // }
-        //     console.log(querySort)
-            
-        // }
-        
 
         // const query = await Tour.find(JSON.parse(queryStr)).sort({name: 1}).select('name')
         let queryFields = "name"
         let querySort = {};
         let queryLimit = 2;
+        let querySkip = 0
 
         //3. Sort
         if(req.query.sort){
@@ -103,28 +95,16 @@ exports.getAllTours = async(req, res) => {
 
         if(req.query.page){
             console.log("Query Page", req.query.page)
-            // const page = req.query.page * 1 || 1;
-            // const limit = req.query.limit * 1 || 100;
-            // const skip = (page - 1) * limit;
+            const page = req.query.page * 1 || 1;
+            const limit = req.query.limit * 1 || 10;
+             querySkip = (page - 1) * limit;
         
             // query = query.skip(skip).limit(limit);
         
         }
 
-        const query = await Tour.find(JSON.parse(queryStr)).select(queryFields).sort(querySort).limit(queryLimit)
-  
-        // console.log(query)
-        // Execute Query 
-
-        // if(req.query.sort){
-        //     const sortBy = req.query.sort.split(',').join(' ')
-        //     console.log(sortBy,'LLLL')
-
-        //     query = query.sort({name: 1})
-        // }
-
+        const query = await Tour.find(JSON.parse(queryStr)).select(queryFields).sort(querySort).skip(querySkip).limit(queryLimit)
         const tours = await query
-
         //Send Response
         res.status(200).json({
             status:'success',
