@@ -207,3 +207,38 @@ exports.getTourStats = async(req,res,)=>{
         })
     }
 }
+
+exports.getMonthlyPlan = async(req,res)=>{
+    try{
+
+        const year = req.params.year*1
+        const plan = await Tour.aggregate([
+            {
+                $unwind:'$startDates'
+            },
+            {
+                $match:{
+                    startDates:{
+                        $gte: new Date(`${year}-01-01`),
+                        $lte: new Date(`${year}-12-31`)
+
+                    }
+                }
+            }
+        ])
+
+        res.status(200).json({
+            status:'success',
+            data:{
+                plan
+            }
+        })
+    } catch(err) {
+        console.log(err)
+        res.status(404).json({
+            status: 'fail',
+            message: err
+        })
+    }
+
+}
