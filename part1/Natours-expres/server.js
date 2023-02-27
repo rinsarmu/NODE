@@ -19,14 +19,12 @@ mongoose.connect(DB, {
     .then(con=>{
         console.log(con.connections)
         console.log("Db connection established")
-    });
+    }).catch(err=>{console.log(err, "connection error")});
+    
+    
+    
+    const PORT = process.env.PORT || 8000
+    app.listen(PORT, ()=>{console.log("port is running on 8000")})
 
 
-
-
-
-
-const PORT = process.env.PORT || 8000
-
-app.listen(PORT, ()=>{console.log("port is running on 8000")})
 
