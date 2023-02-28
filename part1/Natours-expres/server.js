@@ -1,5 +1,15 @@
 // Entry of the application.
 // //all db configuration, environment et
+
+process.on('uncaughtException', err=>{
+    console.log(err.name, err.message)
+    console.log("Uncaught exception  Shuting down...")
+    server.close(()=>{
+
+        process.exit(1)
+    });
+})
+
 const dotenv = require('dotenv')
 const app = require('./app')
 const mongoose = require('mongoose');
@@ -19,12 +29,28 @@ mongoose.connect(DB, {
     .then(con=>{
         console.log(con.connections)
         console.log("Db connection established")
-    }).catch(err=>{console.log(err, "connection error")});
-    
+    })
     
     
     const PORT = process.env.PORT || 8000
-    app.listen(PORT, ()=>{console.log("port is running on 8000")})
+    const server = app.listen(PORT, ()=>{console.log("port is running on 8000")})
 
+process.on('unhandledRejection', err=>{
+    console.log(err.name, err.message)
+    console.log("UNHANDELED REJECTION Shuting down...")
+    server.close(()=>{
 
+        process.exit(1)
+    });
+})
 
+process.on('uncaughtException', err=>{
+    console.log(err.name, err.message)
+    console.log("Uncaught exception  Shuting down...")
+    server.close(()=>{
+
+        process.exit(1)
+    });
+})
+
+console.log(x)
