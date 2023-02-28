@@ -14,13 +14,22 @@ const handleduplicateFieldErrorDB = (err)=>{
     return new AppError(message, 400)
 }
 
+const handleValidationError =(err)=>{
+    const errors = Object.values(err.errors).map(el=>el.message)
+    const message = `Invalid input data ${errors}.join(', ')`
+
+
+    return new AppError(message,400)
+
+}
+
 const sendErrorProd = (err, res)=>{
-    // Operational, trusted Error: send message to client
+    // Operational, trusted Error: send message to clientdventurer 1
     if(err.isOperational){
         res.status(err.statusCode).json({
             status: err.status,
             message: err.message,
-            error:err
+           
     
         })
 
@@ -77,6 +86,8 @@ module.exports = (err, req, res, next) => {
 
         // if (error.name === 'CastError') error= handleCastErrorDB(error)
         if(error.code === 11000) error = handleduplicateFieldErrorDB(err)
+        if(err.name === 'ValidationError') error = handleValidationError(err)
+
 
 
         sendErrorProd(error, res)
