@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, "public")))
 
 app.use((req, res, next) => {
     console.log("Hello from the middleware")
+    // console.log(req.headers)
     next();
 })
 
