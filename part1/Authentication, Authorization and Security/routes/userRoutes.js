@@ -11,11 +11,17 @@ const {
 
 const {
     signup,
-     login
+     login,
+     forgotPassword,
+     resetPassword
     } = require('../controllers/authController')
 
 userRouter.post('/signup', signup)
+userRouter.post('/forgotPassword', forgotPassword)
+userRouter.post('/resetPassword', resetPassword)
+
 userRouter.post('/login', login)
+
  
 userRouter.route('/')
     .get(getAllUsers)
