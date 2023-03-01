@@ -15,7 +15,7 @@ const {
     //   checkBody
     } = require('../controllers/tourController')
 
-const {protect} = require('./../controllers/authController')
+const {protect, restrictTo} = require('./../controllers/authController')
 
 
 // tourRouter.param('id', checkId)
@@ -30,6 +30,6 @@ tourRouter.route('/')
 tourRouter.route('/:id')
     .get(getTour)
     .patch(updateTour)
-    .delete(deleteTour)
+    .delete(protect, restrictTo("admin", 'lead-guide'),deleteTour)
 
     module.exports = tourRouter
