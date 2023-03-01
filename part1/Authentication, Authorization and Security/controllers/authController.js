@@ -1,8 +1,8 @@
+const promisify = require('util').promisify;
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModels')
 const AppError = require('./../utils/AppError')
 const catchAsync = require('./../utils/catchAsync')
-const bcrypt = require('bcryptjs')
 
 const signToken = (id) =>{
    return jwt.sign({id}, process.env.JWT_SECRET,{
@@ -16,7 +16,8 @@ exports.signup = catchAsync(async(req,res,next)=>{
     const newUser = await User.create({
         name:req.body.name,
         email: req.body.email,
-        password:req.body.password
+        password:req.body.password,
+        passwordChangedAt: req.body.passwordChangedAt
     })
 
     const token = signToken(newUser._id)
@@ -68,15 +69,35 @@ exports.protect = catchAsync(async(req,res, next)=>{
     ){
         token = req.headers.authorization.split(' ')[1]
     }
-    console.log(token)
+    // console.log(token)
     if(!token){
         return next(new AppError("You are not loggedin! Please log in to get acceess", 401))
     }
 
     //2) Verification token
+   console.log("decode .... first ") 
 
+   const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
+   console.log("decode .... ") 
+   console.log(decoded)
     //3) Check if user still exists
 
+    const currentUser = await User.findById(decoded.id)
+    if(!currentUser){
+        return next(new AppError("THe user belonging to this token does no longer exists.", 401))
+    }
+
+        // return next(new AppError("Te user belonging to this token does no longer exists.", 401))
+
+
     //4) Check if user changed password  after the token was issued
+   if (currentUser.changedPasswordAfter(decoded.iat)) {
+    console.log("change.... blah")
+
+    return  next(new AppError("User recently changed password ! Session is already expired", 401))
+   }
+
+   //Grant Access to Protected Route
+   req.user = currentUser;
     next()
 })
