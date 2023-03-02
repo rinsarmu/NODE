@@ -65,6 +65,7 @@ exports.updateMe =catchAsync(async (req, res, next)=>{
 exports.deleteMe = catchAsync(async(req,res,next)=>{
     await User.findByIdAndUpdate(req.user.id, {active: false} )
 
+    req.headers.authorization.split(' ')[1] = " "
     res.status(204).json({
         data: null
     })
