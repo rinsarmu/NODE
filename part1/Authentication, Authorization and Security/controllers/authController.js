@@ -23,25 +23,22 @@ const createSendToken = (user, statusCode, res)=>{
     }
     if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
     
-    res.cookie('jwt',token,cookieOptions)
+    // res.cookie('jwt',token,cookieOptions)
 
     //to hide user pasword from the output
     user.password = undefined
 
-    res.status(statusCode).json({
-        status: 'Success',
-        token,
-        data:{
-            user: user
-        }
-    })
-    res.status(statusCode).json({
-        status: 'Success',
-        token,
-        data:{
-            user: user
-        }
-    })
+    
+    res
+        .cookie('jwt',token,cookieOptions)
+        .status(statusCode)
+        .json({
+            status: 'Success',
+            token,
+            data:{
+                user: user
+            }
+        })
 }
 
 exports.signup = catchAsync(async(req,res,next)=>{

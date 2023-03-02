@@ -4,6 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require("xss-clean")
+const hpp = require('hpp')
 
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/AppError')
@@ -12,12 +16,19 @@ const userRouter = require('./routes/userRoutes')
 
 
 // 1. Global MIDDLEWARES
+
+// Security HTTP headers
+app.use(helmet())
+
+//DEVELOPMENT
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'development') {
     app.use(morgan('dev'))
 
 }
 
+
+//LIMIT REQUEST
 //Limiting number of request comes from the same ip address to protect DNS and brute force I use express-rate-limiter
 
 const limiter = rateLimit({
@@ -28,13 +39,38 @@ const limiter = rateLimit({
 
 app.use("/api", limiter)
 
-app.use(express.json())
+
+//BODY PARSER, readeing data form body int req.body
+app.use(express.json({limit:'10kb'}))
+
+
+// DATA SANITIZATION 
+//1) Data sanitization against NoSQL query injection
+app.use(mongoSanitize()) //it removes all $ character from accessing ther db 
+
+    //2) Data Sanitization against XSS
+app.use(xss())
+
+//Prevent parameter pollution
+app.use(hpp({
+    whitelist: [
+        'duration',
+        'ratingsQuantity',
+        'ratingsAverage',
+        'difficulty',
+        'price'
+    ]
+}))
+
+
 // app.use(express.static(`${__dirname}/public}`))
 console.log(typeof (`(${__dirname}/public`))
 console.log(typeof (path.join(__dirname, "public")))
 
+//serving static files
 app.use(express.static(path.join(__dirname, "public")))
 
+//Test middleware
 app.use((req, res, next) => {
     console.log("Hello from the middleware")
     // console.log(req.headers)
