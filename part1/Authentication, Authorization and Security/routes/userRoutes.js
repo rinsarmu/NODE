@@ -7,7 +7,8 @@ const {
     getUser,
     updateUser,
     deleteUser,
-    updateMe
+    updateMe,
+    deleteMe
 } = require('../controllers/userController')
 
 const {
@@ -24,6 +25,8 @@ userRouter.post('/forgotPassword', forgotPassword)
 userRouter.patch('/resetPassword:token', resetPassword)
 userRouter.patch('/updatePassword', protect, updatePassword)
 userRouter.patch('/updateMe', protect, updateMe)
+userRouter.delete('/deleteMe', protect, deleteMe)
+
 
 
 

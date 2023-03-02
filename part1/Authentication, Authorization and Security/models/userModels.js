@@ -38,6 +38,12 @@ const userSchema  = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    active: {
+        type: Boolean,
+        default: true,
+        select: false
+        
+    },
     passwordResetToken: String,
     passwordResetExpires: Date,
     confirmPassword:{
@@ -100,6 +106,14 @@ userSchema.methods.createPasswordResetToken = function(){
     
     return resetToken
 }
+
+//Query Middleware
+
+userSchema.pre(/^find/, function(next){
+this.find({active: {$ne: false}})
+console.log("something..")
+next()
+})
 
 
 const User = mongoose.model('User', userSchema)

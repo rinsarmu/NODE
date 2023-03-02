@@ -51,7 +51,7 @@ exports.updateMe =catchAsync(async (req, res, next)=>{
     const filteredBody = filterObj(req.body, "name", 'email')
    
     //3) Update user document
-    const updatedUser =await User.findOneAndUpdate(req.body.id, filteredBody, {new:true, runValidators: true})
+    const updatedUser =await User.findByIdAndUpdate(req.user.id, filteredBody, {new:true, runValidators: true})
     console.log("User..........", filteredBody)
 
     res.status(200).json({
@@ -59,6 +59,14 @@ exports.updateMe =catchAsync(async (req, res, next)=>{
         data: { 
             user: updatedUser
         }
+    })
+})
+
+exports.deleteMe = catchAsync(async(req,res,next)=>{
+    await User.findByIdAndUpdate(req.user.id, {active: false} )
+
+    res.status(204).json({
+        data: null
     })
 })
 
