@@ -17,7 +17,7 @@ const sendEmail = async options=>{
     const mailOptions = {
         from: 'robera insarmu <users@gmail.com',
         to: "user1@example.com",
-        to: options.subject,
+        subject: options.subject,
 
         text: options.message
         //html
@@ -25,12 +25,7 @@ const sendEmail = async options=>{
     }
 
     //3) Actually send the email
-     transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-});
+    await transporter.sendMail(mailOptions)
 }
 
 module.exports = sendEmail

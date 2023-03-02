@@ -13,14 +13,19 @@ const {
     signup,
      login,
      forgotPassword,
-     resetPassword
+     resetPassword,
+     updatePassword,
+     protect
     } = require('../controllers/authController')
 
 userRouter.post('/signup', signup)
 userRouter.post('/forgotPassword', forgotPassword)
-userRouter.post('/resetPassword', resetPassword)
+userRouter.patch('/resetPassword:token', resetPassword)
+userRouter.patch('/updatePassword', protect, updatePassword)
+
 
 userRouter.post('/login', login)
+
 
  
 userRouter.route('/')
