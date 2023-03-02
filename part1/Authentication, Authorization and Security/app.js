@@ -3,6 +3,7 @@ const app = express()
 const path = require('path');
 const fs = require('fs');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/AppError')
@@ -10,12 +11,22 @@ const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
 
 
-// 1.  MIDDLEWARES
+// 1. Global MIDDLEWARES
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'development') {
     app.use(morgan('dev'))
 
 }
+
+//Limiting number of request comes from the same ip address to protect DNS and brute force I use express-rate-limiter
+
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000, //allow 100 request from the server in one hour only
+    message: 'Too many requests from this IP, please try again in an hour!'
+})
+
+app.use("/api", limiter)
 
 app.use(express.json())
 // app.use(express.static(`${__dirname}/public}`))
