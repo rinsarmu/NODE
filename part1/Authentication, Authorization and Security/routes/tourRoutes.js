@@ -16,6 +16,7 @@ const {
     } = require('../controllers/tourController')
 
 const {protect, restrictTo} = require('./../controllers/authController')
+const {createReviews} = require('./../controllers/reviewController')
 
 
 // tourRouter.param('id', checkId)
@@ -32,4 +33,5 @@ tourRouter.route('/:id')
     .patch(updateTour)
     .delete(protect, restrictTo("admin", 'lead-guide'),deleteTour)
 
+tourRouter.route('/:tourId/review').post(protect, restrictTo('user'), createReviews)
     module.exports = tourRouter
