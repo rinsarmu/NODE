@@ -35,7 +35,10 @@ const reviewSchema = new mongoose.Schema({
 //     this.find().select('- __v')
 // })
 
+
 reviewSchema.pre(/^find/, function(next){
+
+    //Populating the reviews
     this.populate({
         path: 'tour',
         select: '-guides'
