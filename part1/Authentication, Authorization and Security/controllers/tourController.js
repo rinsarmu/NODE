@@ -41,7 +41,6 @@ exports.aliasTopTours = (req,res,next)=>{
 }
 exports.getAllTours = catchAsync(async(req, res, next) => {
 
-       
         const tours = await Data(req,Tour)
         //Send Response
         if(tours.length=== 0){

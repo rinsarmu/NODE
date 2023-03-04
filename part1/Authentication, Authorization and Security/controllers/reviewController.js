@@ -1,7 +1,11 @@
 const Review = require('./../models/reviewModel')
 const catchAsync = require('./../utils/catchAsync')
 const AppError = require('./../utils/AppError')
+
 exports.getAllReviews =catchAsync(async(req,res,next)=>{
+    let filter = {}
+    if(req.params.toursId) {filter=({tour: req.params.toursId})}
+    console.log("Filters", filter)
     const reviews = await Review.find()
 
     if(!reviews){
@@ -55,6 +59,8 @@ exports.createReviews = catchAsync(async(req,res,next)=>{
     //It's working
 
     //allow nested routes
+    console.log("logging............")
+    console.log(req.params)
     if(!req.body.tour) req.body.tour = req.params.tourId
     if(!req.body.user) req.body.user = req.user.id
 
