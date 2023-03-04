@@ -2,13 +2,14 @@ const express = require('express')
 const {
     getAllReviews,
     getReview,
-    createReviews
+    createReviews,
+    deleteReview
     } = require('./../controllers/reviewController')
 
 const {protect, restrictTo} =  require('./../controllers/authController')
 
 const reviewRouter = express.Router({mergeParams:true})
-console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
+console.log("")
 
 // reviewRouter.route('/:id')
 //     .get(getReview)
@@ -16,5 +17,8 @@ console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
 reviewRouter.route('/')
     .get(protect,restrictTo('user'), getAllReviews)
     .post(protect,restrictTo('user'), createReviews)
+
+// reviewRouter.route('/:id').delete(protect, restrictTo('user'), deleteReview))
+reviewRouter.route('/:id').delete( deleteReview)
 
 module.exports = reviewRouter
