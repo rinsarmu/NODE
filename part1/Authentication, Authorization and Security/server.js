@@ -14,7 +14,7 @@ const mongoose = require('mongoose');
 const { Number } = require('mongoose');
 
 dotenv.config({path: './config.env'})
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
+// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
 
 mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
@@ -34,6 +34,7 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
     const server = app.listen(PORT, ()=>{console.log("port is running on 8000")})
 
 process.on('unhandledRejection', err=>{
+    console.log(err)
     console.log(err.name, err.message)
     console.log("UNHANDELED db REJECTION Shuting down...")
     server.close(()=>{

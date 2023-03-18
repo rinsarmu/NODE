@@ -78,6 +78,12 @@ reviewSchema.post('save', function(){
     
 })
 
+reviewSchema.pre(/findByIdAnd/, function(next){
+    const r = this.findOne();
+    console.log(r)
+
+})
+
 const Review = mongoose.model('Review', reviewSchema)
 
 module.exports = Review
