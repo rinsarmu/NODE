@@ -40,10 +40,10 @@ reviewSchema.pre(/^find/, function(next){
 
     //Populating the reviews
     this
-    // .populate({
-    //     path: 'tour',
-    //     select: '-guides'
-    // })
+    .populate({
+        path: 'tour',
+        select: 'name'
+    })
     .populate({
         path: 'user',
         select: "name, role"

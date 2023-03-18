@@ -20,7 +20,6 @@ const {protect, restrictTo} = require('./../controllers/authController')
 const reviewRouter = require('./../routes/reviewRoutes');
 const { Router } = require('express');
 
-
 tourRouter.use('/:tourId/review', protect, reviewRouter)
 
 // tourRouter.param('id', checkId)
