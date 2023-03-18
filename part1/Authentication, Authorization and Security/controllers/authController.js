@@ -120,7 +120,7 @@ exports.protect = catchAsync(async(req,res, next)=>{
 
    const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
    console.log("decode .... ") 
-   console.log(decoded)
+   console.error(decoded)
     //3) Check if user still exists
 
     const currentUser = await User.findById(decoded.id)
@@ -197,49 +197,7 @@ exports.forgotPassword =catchAsync(async(req, res, next)=>{
   
 })
 
-// exports.forgotPassword = catchAsync(async (req, res, next) => {
-//     // Validate the request body
-//     if (!req.body.email || !validator.isEmail(req.body.email)) {
-//       return next(new AppError("Please provide a valid email address", 400));
-//     }
-  
-//     // Get user based on posted email
-//     const user = await User.findOne({ email: req.body.email });
-  
-//     if (!user) {
-//       return next(new AppError("There is no user with this email", 404));
-//     }
-  
-//     // Generate the random reset token
-//     const resetToken = user.createPasswordResetToken();
-//     await user.save({ validateBeforeSave: false });
-  
-//     // Send reset password email to the user
-//     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-  
-//     const message = `Forgot your password? Submit a patch request with your new password and confirmation to: ${resetUrl}.\n If you didn't forget your password, please ignore this email.`;
-  
-//     try {
-//       await sendPasswordResetEmail(user.email, message);
-  
-//       res.status(200).json({
-//         status: 'success',
-//         message: 'Token sent to email'
-//       });
-//     } catch (error) {
-//       // Remove the reset token and expiry time
-//       user.passwordResetToken = undefined;
-//       user.passwordResetExpires = undefined;
-//       await user.save({ validateBeforeSave: false });
-  
-//       // Log the error and return a 500 error response
-//       console.error(`Failed to send password reset email: ${error}`);
-//       return next(new AppError("Failed to send password reset email. Please try again later", 500));
-//     }
-//   });
-  
-  // Function for sending password reset email
-  async function sendPasswordResetEmail(email, message) {
+ async function sendPasswordResetEmail(email, message) {
     await sendEmail({
       email: email,
       subject: 'Your password reset token',
@@ -303,7 +261,8 @@ exports.updatePassword = catchAsync(async(req,res,next) => {
 
 
     //4) Log user in, send JWT
-  createSendToken(user, 200, res) 
+    console.log("send updated token")
+    createSendToken(user, 200, res) 
 
     // const token = signToken(user.id)
     // res.status(200).json({

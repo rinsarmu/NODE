@@ -25,16 +25,23 @@ tourRouter.use('/:tourId/review', protect, reviewRouter)
 // tourRouter.param('id', checkId)
 tourRouter.route('/tour-stats').get(getTourStats)
 tourRouter.route('/top-5-cheap').get(aliasTopTours, getAllTours)
-tourRouter.route('/monthly-plan/:year').get(getMonthlyPlan)
+tourRouter.route('/monthly-plan/:year').get(protect,restrictTo('admin', 'lead-guide'), getMonthlyPlan)
 
 tourRouter.route('/')
     .get(protect, getAllTours)
-    .post( createTour)
+    .post(protect,restrictTo('admin', 'lead-guide', 'guide'), createTour)
 
 tourRouter.route('/:id')
     .get(getTour)
-    .patch(updateTour)
-    .delete(protect, restrictTo("admin", 'lead-guide'),deleteTour)
+    .patch(
+        protect, 
+        restrictTo("admin", 'lead-guide'),
+        updateTour)
+    .delete(
+        protect, 
+        restrictTo("admin", 'lead-guide'),
+        deleteTour
+    )
 
 // tourRouter.route('/:tourId/review').post(protect, restrictTo('user'), createReviews)
 

@@ -18,23 +18,24 @@ const {
      forgotPassword,
      resetPassword,
      updatePassword,
-     protect
+     protect,
+     restrictTo
     } = require('../controllers/authController')
 
 userRouter.post('/signup', signup)
-userRouter.post('/forgotPassword', forgotPassword)
-userRouter.get('/me', protect,getMe, getUser)
-
-userRouter.patch('/resetPassword/:token', resetPassword)
-userRouter.patch('/updatePassword', protect, updatePassword)
-userRouter.patch('/updateMe', protect, updateMe)
-userRouter.delete('/deleteMe', protect, deleteMe)
-
-
-
-
 userRouter.post('/login', login)
- 
+
+userRouter.post('/forgotPassword', forgotPassword)
+userRouter.patch('/resetPassword/:token', resetPassword)
+
+//protect all routes after this middleware.
+userRouter.use(protect)
+userRouter.patch('/updatePassword', updatePassword)
+userRouter.patch('/updateMe', updateMe)
+userRouter.delete('/deleteMe', deleteMe)
+userRouter.get('/me', getMe, getUser)
+
+userRouter.use(restrictTo('admin'))
 userRouter.route('/')
     .get(getAllUsers)
     .post(createUser)
