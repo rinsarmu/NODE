@@ -40,23 +40,23 @@ exports.aliasTopTours = (req,res,next)=>{
     req.query.fields = 'name,price, ratingsAverages,summary,difficulty'
     next();
 }
-exports.getAllTours = catchAsync(async(req, res, next) => {
+// exports.getAllTours = catchAsync(async(req, res, next) => {
 
-        const tours = await Data(req,Tour)
-        //Send Response
-        if(tours.length=== 0){
-            // console.log("No tours found")
-            return next(new AppError(`No tours found`, 404))
-         }
-        res.status(200).json({
-            status:'success',
-            results:tours.length,
-            data: {
-                tours:tours
-            }
-        })
+//         const tours = await Data(req,Tour)
+//         //Send Response
+//         if(tours.length=== 0){
+//             // console.log("No tours found")
+//             return next(new AppError(`No tours found`, 404))
+//          }
+//         res.status(200).json({
+//             status:'success',
+//             results:tours.length,
+//             data: {
+//                 tours:tours
+//             }
+//         })
     
-})
+// })
 
 
 
@@ -65,6 +65,7 @@ exports.createTour= factory.createOne(Tour)
 exports.updateTour = factory.updateOne(Tour)
 exports.deleteTour = factory.deleteOne(Tour)
 exports.getTour = factory.getOne(Tour,{path: 'reviews'})
+exports.getAllTours = factory.getAll(Tour)
 // exports.getTour = catchAsync(async (req, res, next) => {
  
 //     const {id} = req.params;

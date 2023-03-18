@@ -1,5 +1,6 @@
 const catchAsync = require('./../utils/catchAsync')
 const AppError = require('./../utils/AppError')
+const {Data} = require('./../utils/utilApp');
 
 exports.deleteOne = Model=> catchAsync(async (req, res, next) => {
     const{id} = req.params
@@ -70,5 +71,23 @@ exports.getOne = (Model, popOptions)=> catchAsync(async (req, res, next) => {
             data:doc 
         }
     })
+})
+
+exports.getAll = Model => catchAsync(async(req, res, next) => {
+
+    const doc = await Data(req,Model)
+    //Send Response
+    if(doc.length=== 0){
+        // console.log("No doc found")
+        return next(new AppError(`No doc is found`, 404))
+     }
+    res.status(200).json({
+        status:'success',
+        results:doc.length,
+        data: {
+            doc:doc
+        }
+    })
+
 })
 

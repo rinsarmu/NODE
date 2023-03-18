@@ -153,7 +153,9 @@ exports.Data = async(req, Tour) => {
         
         }
 
+        // const query = await Tour.find(JSON.parse(queryStr)).select(queryFields).sort(querySort).skip(querySkip).limit(queryLimit).explain()
         const query = await Tour.find(JSON.parse(queryStr)).select(queryFields).sort(querySort).skip(querySkip).limit(queryLimit)
+
         return query
       
 }

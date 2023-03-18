@@ -28,7 +28,7 @@ tourRouter.route('/top-5-cheap').get(aliasTopTours, getAllTours)
 tourRouter.route('/monthly-plan/:year').get(protect,restrictTo('admin', 'lead-guide'), getMonthlyPlan)
 
 tourRouter.route('/')
-    .get(protect, getAllTours)
+    .get(getAllTours)
     .post(protect,restrictTo('admin', 'lead-guide', 'guide'), createTour)
 
 tourRouter.route('/:id')

@@ -125,6 +125,10 @@ const tourSchema = new mongoose.Schema({
 }
 )
 
+//compound indexing
+tourSchema.index({price:1, ratingsAverage:-1})
+tourSchema.index({slug: 1})
+
 tourSchema.virtual('durationWeeks').get(function(){
     return this.duration / 7
 })
@@ -197,8 +201,5 @@ tourSchema.pre('aggregate', function(next){
     next()
 })
 
-
 const Tour = mongoose.model('Tour', tourSchema)
 module.exports = Tour
-
-
