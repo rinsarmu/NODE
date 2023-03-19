@@ -66,10 +66,18 @@ reviewSchema.statics.calcAverageRatings =async function(tourId){
             }
         }
     ])
-    await Tour.findByIdAndUpdate(tourId,{
-        ratingsAverage: stats[0].avgRating,
-        ratingsQuantity: stats[0].nRating
-    })
+    if(stats.length > 0){
+        await Tour.findByIdAndUpdate(tourId,{
+            ratingsAverage: stats[0].avgRating,
+            ratingsQuantity: stats[0].nRating
+        })
+    } else {
+        await Tour.findByIdAndUpdate(tourId,{
+            ratingsAverage: 4.5,
+            ratingsQuantity: 0
+        })
+    }
+   
 }
 
 reviewSchema.post('save', function(){
@@ -78,11 +86,20 @@ reviewSchema.post('save', function(){
     
 })
 
-reviewSchema.pre(/findByIdAnd/, function(next){
-    const r = this.findOne();
-    console.log(r)
-
+reviewSchema.pre(/^findOneAnd/, async function(next){
+    this.r = await this.findOne()
+    next()
 })
+
+reviewSchema.post(/^findOneAnd/, async function(){
+    //this points to current reviewhill
+    console.log(this.r)
+    console.error(this.r.constructor.calcAverageRatings(this.r.tour))
+    // await  this.r.constructor.calcAverageRatings(this.r.tour)
+})
+
+// findByIdAndUpdate
+// findByIdAndDelete
 
 const Review = mongoose.model('Review', reviewSchema)
 

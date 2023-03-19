@@ -20,6 +20,7 @@ reviewRouter.route('/')
         restrictTo('user'), 
         setTourUserIds,
         createReview)
+    .patch( restrictTo('user', 'admin'),updateReview)
 
 // reviewRouter.route('/:id').delete(protect, restrictTo('user'), deleteReview))
 reviewRouter.route('/:id')
