@@ -22,16 +22,13 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
     useFindAndModify: false,
     useUnifiedTopology: true,
   
-    
 })
     .then(con=>{
         // console.log(con.connections)
         console.log("Db connection established")
     })
-    
-    
     const PORT = process.env.PORT || 8000
-    const server = app.listen(PORT, ()=>{console.log("port is running on 8000")})
+    const server = app.listen(PORT, ()=>{console.log(`port is running on ${PORT}`)})
 
 process.on('unhandledRejection', err=>{
     console.log(err)

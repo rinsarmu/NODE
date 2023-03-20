@@ -3,7 +3,7 @@
     "startLocation": {
       "description": "Miami, USA",
       "type": "Point",
-      "coordinates": [-80.185942, 25.774772],
+      "coordinates": [59.8816934,-13.8125579],
       "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
     },
     "ratingsAverage": 4.8,

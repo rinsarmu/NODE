@@ -10,7 +10,8 @@ const {
       deleteTour,
       aliasTopTours,
       getTourStats,
-      getMonthlyPlan
+      getMonthlyPlan,
+      getToursWithIn
     //   checkId,
     //   checkBody
     } = require('../controllers/tourController')
@@ -26,6 +27,9 @@ tourRouter.use('/:tourId/review', protect, reviewRouter)
 tourRouter.route('/tour-stats').get(getTourStats)
 tourRouter.route('/top-5-cheap').get(aliasTopTours, getAllTours)
 tourRouter.route('/monthly-plan/:year').get(protect,restrictTo('admin', 'lead-guide'), getMonthlyPlan)
+
+
+tourRouter.route('/tours-within/:distance/center/:latLang/unit/:unit').get(getToursWithIn)
 
 tourRouter.route('/')
     .get(getAllTours)
