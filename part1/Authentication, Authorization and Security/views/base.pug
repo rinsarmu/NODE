@@ -11,38 +11,12 @@ html
 
     body
         //- HEADER
-        header.header
-            nav.nav.nav--tours
-                a.nav__el(href="#") All tours
-                //- form.nav__search
-                    button.nav__search-btn
-                        svg
-                            use(xlink:href='img/icons.svg#icon-search')
-                    input.nav__search-input(type='text' placeholder='Search tours')
-                    
-            div.header__logo
-                img(src='img/logo-white.png' alt='Natours logo')
-            
-            nav.nav.nav--user
-                //- a.nav__el(href="#") My bookings
-                //- a.nav__el(href="#")
-                //-     img.nav__user-img(src='img/users/user-1.jpg' alt='user photo')
-                //-     span Robera
+        include _header
 
-                button.nav__el Log in
-                button.nav__el.nav__el--cta Sign up
         //- CONTENT
         section.overview
             h1 #{text}
         //- Footer
          <div class="footer">
-        footer.footer
-            .footer__logo
-                img(src='img/logo-green.png' alt='Natours logo')
-            ul.footer__nav
-                li: a(href='#') About us
-                li: a(href='#') Download apps
-                li: a(href='#') Become a guide
-                li: a(href='#') Careers
-                li: a(href='#') Contact us
-            p.footer.copyright &copy; by Robera Insarmu. All rights reserved
+        include _footer
+    
