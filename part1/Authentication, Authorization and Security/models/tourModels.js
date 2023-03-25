@@ -158,10 +158,6 @@ tourSchema.pre('save', function(next){
 //    this.guides = await Promise.all(guidesPromises)
 // })
 
-
-
-
-
 // tourSchema.pre('save', function(next){
 //     console.log("WIll save documetn...")
 //     next();
@@ -196,12 +192,12 @@ tourSchema.post(/^find/, function(doc, next){
 })
 
 //Aggregation middleware
-tourSchema.pre('aggregate', function(next){
-    this.pipeline().unshift({$match:{secretTour:{$ne: true}}})
-    console.log(this.pipeline())
+// tourSchema.pre('aggregate', function(next){
+//     this.pipeline().unshift({$match:{secretTour:{$ne: true}}})
+//     console.log(this.pipeline())
 
-    next()
-})
+//     next()
+// })
 
 const Tour = mongoose.model('Tour', tourSchema)
 module.exports = Tour

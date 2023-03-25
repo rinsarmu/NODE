@@ -11,7 +11,9 @@ const {
       aliasTopTours,
       getTourStats,
       getMonthlyPlan,
-      getToursWithIn
+      getToursWithIn,
+      getDistances
+
     //   checkId,
     //   checkBody
     } = require('../controllers/tourController')
@@ -30,6 +32,8 @@ tourRouter.route('/monthly-plan/:year').get(protect,restrictTo('admin', 'lead-gu
 
 
 tourRouter.route('/tours-within/:distance/center/:latLang/unit/:unit').get(getToursWithIn)
+
+tourRouter.route('/distances/:latLang/unit/:unit').get(getDistances)
 
 tourRouter.route('/')
     .get(getAllTours)

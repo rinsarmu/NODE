@@ -21,6 +21,10 @@ const reviewRouter = require('./routes/reviewRoutes')
 // Security HTTP headers
 app.use(helmet())
 
+//templates
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'));
+
 //DEVELOPMENT
 console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'development') {
@@ -87,9 +91,6 @@ app.use((req, res, next) => {
 //2. CONTROLLERS
 
 
-
-
-
 // app.get('/api/v1/tours', getAllTours)
 
 // app.post('/api/v1/tours',createTour)
@@ -105,6 +106,11 @@ app.use((req, res, next) => {
 
 
 
+app.get('/', (req,res,next)=>{
+    res.status(200).render('base', {
+        text: 'this is natours app'
+    })
+})
 
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)

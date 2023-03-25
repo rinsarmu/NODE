@@ -250,7 +250,7 @@ exports.getToursWithIn = catchAsync(async(req,res,next)=>{
     const [lat,long] = latLang.split(',')
     const radius = unit === 'mi'? distance/3963.2 : distance= distance /6378.1
     if(!lat || !long){
-        next(new AppError(`please provide a latitude and longitud in the format lat,lang`), 400)
+        next(new AppError(`please provide a latitude and longitud in the format lat,lang`, 400))
     }
     console.log('tours with in', distance, latLang, unit)
 
@@ -267,3 +267,42 @@ exports.getToursWithIn = catchAsync(async(req,res,next)=>{
         }
     })
 })
+
+exports.getDistances = catchAsync(async(req,res,next)=>{
+  
+    const {latLang, unit} = req.params
+    console.log(latLang)
+    const [lat,long] = latLang.split(',')
+    const multiplier = unit === 'mi' ? 0.000621371 : 0.001
+
+    if(!lat || !long){
+        next(new AppError(`please provide a latitude and longitud in the format lat,lang`, 400))
+    }
+    console.log('tours with in', latLang, unit)
+
+    const distances = await Tour.aggregate([
+        {
+            $geoNear: {
+                near:{
+                    type: 'Point',
+                    coordinates: [long * 1, lat * 1]
+                },
+                distanceField: 'distance',
+                distanceMultiplier: multiplier
+            }
+        },
+        {
+            $project:{
+                distance: 1,
+                name: 1
+            }
+        }
+    ])
+
+    res.status(200).json({
+        status: 'success',
+        data:{
+            data: distances
+        }
+    })
+} )
