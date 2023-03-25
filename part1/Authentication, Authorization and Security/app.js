@@ -14,6 +14,8 @@ const AppError = require('./utils/AppError')
 const tourRouter = require('./routes/tourRoutes')
 const userRouter = require('./routes/userRoutes')
 const reviewRouter = require('./routes/reviewRoutes')
+const viewRouter = require('./routes/viewRoutes')
+
 
 
 // 1. Global MIDDLEWARES
@@ -104,26 +106,7 @@ app.use((req, res, next) => {
 //3. ROUTE
 
 
-
-
-app.get('/', (req,res,next)=>{
-    res.status(200).render('base', {
-        text: 'this is natours app'
-    })
-})
-
-app.get('/overview', (req,res,next)=>{
-    res.status(200).render('overview', {
-        title: 'All tours'
-    })
-})
-
-app.get('/tour', (req,res,next)=>{
-    res.status(200).render('tour', {
-        title: 'The forest Hiker'
-    })
-})
-
+app.use('/', viewRouter)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
