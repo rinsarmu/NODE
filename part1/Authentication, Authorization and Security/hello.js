@@ -76,15 +76,38 @@
 
 // console.log(FindSumPair([1,5,8,1,2], 13))
 
-function isDuodigit(number) {
-    const digits = new Set([...String(number)]);
-    return digits.size <= 2;
-  }
+// function isDuodigit(number) {
+//     const digits = new Set([...String(number)]);
+//     return digits.size <= 2;
+//   }
   
-  function Duodigit(number) {
-    return isDuodigit(number) ? `${number} is a duodigit` : `${number} is not a duodigit`;
-  }
+//   function Duodigit(number) {
+//     return isDuodigit(number) ? `${number} is a duodigit` : `${number} is not a duodigit`;
+//   }
 
-  console.log(Duodigit(12)); // "12 is a duodigit"
-console.log(Duodigit(1633333)); // "1633333 is a duodigit"
-console.log(Duodigit(102));
+//   console.log(Duodigit(12)); // "12 is a duodigit"
+// console.log(Duodigit(1633333)); // "1633333 is a duodigit"
+// console.log(Duodigit(102));
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var smallerNumbersThanCurrent = function(nums) {
+  let numb = 0;
+  let result = []
+  for(let i = 0; i < nums.length; i++){
+    numb = 0
+      for(let j=0; j < nums.length; j++){
+          if(nums[i]>nums[j]){
+              numb++
+          }
+      }
+      result.push(numb)
+
+  }
+  return result
+  
+};
+
+console.log( smallerNumbersThanCurrent([6,5,4,8]))
